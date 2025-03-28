@@ -25,6 +25,16 @@ func TestGenerator_AddField(t *testing.T) {
 				Tags: `json:"username" gorm:"not null"`,
 			},
 		},
+		Methods: []structure.Method{
+			{
+				Name:         "Create",
+				Arguments:    "ctx context.Context",
+				Returns:      "error",
+				Body:         "return nil",
+				StructName:   "*User",
+				ReceiverName: "u",
+			},
+		},
 		Generator: structure.NewGenerator(),
 	}
 

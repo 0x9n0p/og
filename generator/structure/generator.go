@@ -7,11 +7,13 @@ import (
 
 const Template = `type {{struct_name}} struct {
     {{where_fields_must_place}}
-}`
+}
+{{where_methods_must_place}}`
 
 const (
 	StructNameLocation = "{{struct_name}}"
 	FieldsLocation     = "{{where_fields_must_place}}"
+	MethodsLocation    = "{{where_methods_must_place}}"
 )
 
 type Generator struct {
@@ -30,6 +32,11 @@ func (g *Generator) Finalize() error {
 		fmt.Sprintf("\t%s\n", FieldsLocation), "", -1,
 	)
 
+	g.Content = strings.Replace(
+		g.Content,
+		fmt.Sprintf("\n%s", MethodsLocation), "", -1,
+	)
+
 	return nil
 }
 
@@ -46,6 +53,15 @@ func (g *Generator) Field(f Field) error {
 	g.Content = strings.Replace(
 		g.Content, FieldsLocation,
 		fmt.Sprintf("%s\n\t%s", f.Code(), FieldsLocation), 1,
+	)
+
+	return nil
+}
+
+func (g *Generator) Method(m Method) error {
+	g.Content = strings.Replace(
+		g.Content, MethodsLocation,
+		fmt.Sprintf("\n%s\n%s", m.Code(), MethodsLocation), 1,
 	)
 
 	return nil

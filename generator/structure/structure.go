@@ -7,6 +7,7 @@ import (
 type Structure struct {
 	StructName string
 	Fields     []Field
+	Methods    []Method
 
 	Generator *Generator
 }
@@ -20,6 +21,14 @@ func (g *Structure) Generate() error {
 		for _, field := range g.Fields {
 			if err := g.Generator.Field(field); err != nil {
 				return fmt.Errorf("add field: %w", err)
+			}
+		}
+	}
+
+	if g.Methods != nil && len(g.Methods) > 0 {
+		for _, method := range g.Methods {
+			if err := g.Generator.Method(method); err != nil {
+				return fmt.Errorf("add method: %w", err)
 			}
 		}
 	}
