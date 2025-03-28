@@ -10,6 +10,7 @@ type File struct {
 	PackageName string
 	Imports     []Import
 	Structures  []structure.Structure
+	Functions   []string
 	Generator   *Generator
 }
 
@@ -34,6 +35,14 @@ func (g *File) Generate() error {
 
 			if err := g.Generator.Struct(s.Generator.Content); err != nil {
 				return fmt.Errorf("append structure: %w", err)
+			}
+		}
+	}
+
+	if g.Functions != nil && len(g.Functions) > 0 {
+		for _, s := range g.Functions {
+			if err := g.Generator.Struct(s); err != nil {
+				return fmt.Errorf("append function: %w", err)
 			}
 		}
 	}

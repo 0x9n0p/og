@@ -11,12 +11,14 @@ import (
 	{{where_imports_must_place}}
 )
 {{where_structures_must_place}}
+{{where_functions_must_place}}
 `
 
 const (
 	ImportsLocation     = "{{where_imports_must_place}}"
 	PackageNameLocation = "{{package_name}}"
 	StructuresLocation  = "{{where_structures_must_place}}"
+	FunctionsLocation   = "{{where_functions_must_place}}"
 )
 
 type Generator struct {
@@ -38,6 +40,11 @@ func (g *Generator) Finalize() error {
 	g.Content = strings.Replace(
 		g.Content,
 		fmt.Sprintf("%s\n", StructuresLocation), "", 1,
+	)
+
+	g.Content = strings.Replace(
+		g.Content,
+		fmt.Sprintf("%s\n", FunctionsLocation), "", 1,
 	)
 
 	return nil
@@ -65,6 +72,15 @@ func (g *Generator) Struct(s string) error {
 	g.Content = strings.Replace(
 		g.Content, StructuresLocation,
 		fmt.Sprintf("\n%s\n%s", s, StructuresLocation), 1,
+	)
+
+	return nil
+}
+
+func (g *Generator) Function(s string) error {
+	g.Content = strings.Replace(
+		g.Content, FunctionsLocation,
+		fmt.Sprintf("\n%s\n%s", s, FunctionsLocation), 1,
 	)
 
 	return nil
