@@ -44,7 +44,7 @@ func TestGenerator(t *testing.T) {
 				Arguments: "ctx context.Context, value int",
 				Returns:   "error",
 				Body:      "\treturn nil",
-			}).Code(),
+			}).Generate(),
 		},
 		Generator: file.NewGenerator(),
 	}

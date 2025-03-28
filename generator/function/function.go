@@ -1,6 +1,9 @@
 package function
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type Function struct {
 	Name      string
@@ -9,8 +12,8 @@ type Function struct {
 	Body      string
 }
 
-func (f *Function) Code() string {
+func (f *Function) Generate(ctx context.Context) (string, error) {
 	return fmt.Sprintf(`func %s(%s) %s {
 %s
-}`, f.Name, f.Arguments, f.Returns, f.Body)
+}`, f.Name, f.Arguments, f.Returns, f.Body), nil
 }
