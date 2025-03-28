@@ -1,6 +1,9 @@
 package structure
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type Field struct {
 	Name string
@@ -8,7 +11,7 @@ type Field struct {
 	Tags string
 }
 
-func (f *Field) Code() string {
+func (f *Field) Generate(ctx context.Context) (string, error) {
 	if f.Name != "" {
 		f.Name = f.Name + " "
 	}
@@ -18,8 +21,8 @@ func (f *Field) Code() string {
 	}
 
 	if f.Tags != "" {
-		return fmt.Sprintf("%s%s`%s`", f.Name, f.Type, f.Tags)
+		return fmt.Sprintf("%s%s`%s`", f.Name, f.Type, f.Tags), nil
 	}
 
-	return fmt.Sprintf("%s%s", f.Name, f.Type)
+	return fmt.Sprintf("%s%s", f.Name, f.Type), nil
 }

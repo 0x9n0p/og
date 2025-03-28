@@ -30,17 +30,25 @@ func TestGenerator_AddField(t *testing.T) {
 				Name:         "Create",
 				Arguments:    "ctx context.Context",
 				Returns:      "error",
-				Body:         "return nil",
+				Body:         "\treturn nil",
+				StructName:   "*User",
+				ReceiverName: "u",
+			},
+			{
+				Name:         "Save",
+				Arguments:    "ctx context.Context",
+				Returns:      "error",
+				Body:         "\treturn nil",
 				StructName:   "*User",
 				ReceiverName: "u",
 			},
 		},
-		Generator: structure.NewGenerator(),
 	}
 
-	if err := g.Generate(); err != nil {
+	s, err := g.Generate(t.Context())
+	if err != nil {
 		t.Fatalf("generate: %v", err)
 	}
 
-	t.Log(g.Generator.Content)
+	t.Log(s)
 }

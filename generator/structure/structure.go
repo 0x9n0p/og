@@ -1,6 +1,7 @@
 package structure
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -8,34 +9,32 @@ type Structure struct {
 	StructName string
 	Fields     []Field
 	Methods    []Method
-
-	Generator *Generator
 }
 
-func (g *Structure) Generate() error {
-	if err := g.Generator.StructName(g.StructName); err != nil {
-		return fmt.Errorf("set struct name: %w", err)
+func (g *Structure) Generate(ctx context.Context) (string, error) {
+	generated := fmt.Sprintf("type %s struct {", g.StructName)
+
+	for _, f := range g.Fields {
+		s, err := f.Generate(ctx)
+		if err != nil {
+			return "", fmt.Errorf("generate field %s: %w", f.Name, err)
+		}
+
+		generated = generated + fmt.Sprintf("\n\t%s", s)
 	}
 
-	if g.Fields != nil && len(g.Fields) > 0 {
-		for _, field := range g.Fields {
-			if err := g.Generator.Field(field); err != nil {
-				return fmt.Errorf("add field: %w", err)
-			}
-		}
-	}
+	generated += "\n}"
 
 	if g.Methods != nil && len(g.Methods) > 0 {
-		for _, method := range g.Methods {
-			if err := g.Generator.Method(method); err != nil {
-				return fmt.Errorf("add method: %w", err)
+		for _, m := range g.Methods {
+			s, err := m.Generate(ctx)
+			if err != nil {
+				return "", fmt.Errorf("generate method %s: %w", m.Name, err)
 			}
+
+			generated = generated + fmt.Sprintf("\n\n%s", s)
 		}
 	}
 
-	if err := g.Generator.Finalize(); err != nil {
-		return fmt.Errorf("finalize: %w", err)
-	}
-
-	return nil
+	return generated, nil
 }

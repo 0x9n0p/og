@@ -1,6 +1,9 @@
 package structure
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type Method struct {
 	Name         string
@@ -11,8 +14,8 @@ type Method struct {
 	ReceiverName string
 }
 
-func (m *Method) Code() string {
+func (m *Method) Generate(ctx context.Context) (string, error) {
 	return fmt.Sprintf(`func (%s %s) %s(%s) %s {
 %s
-}`, m.ReceiverName, m.StructName, m.Name, m.Arguments, m.Returns, m.Body)
+}`, m.ReceiverName, m.StructName, m.Name, m.Arguments, m.Returns, m.Body), nil
 }
