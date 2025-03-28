@@ -12,7 +12,10 @@ func TestGenerator(t *testing.T) {
 	f := file.File{
 		PackageName: "user",
 		Imports: []file.Import{
-			{Path: "github.com/example/example"},
+			{
+				Alias: "_",
+				Path:  "github.com/example/example",
+			},
 		},
 		Structures: []structure.Structure{
 			{
@@ -24,7 +27,6 @@ func TestGenerator(t *testing.T) {
 						Tags: `json:"username"`,
 					},
 				},
-				Generator: structure.NewGenerator(),
 			},
 			{
 				StructName: "Wallet",
@@ -35,23 +37,32 @@ func TestGenerator(t *testing.T) {
 						Tags: `json:"balance"`,
 					},
 				},
-				Generator: structure.NewGenerator(),
+				Methods: []structure.Method{
+					{
+						Name:         "Save",
+						Arguments:    "",
+						Returns:      "error",
+						Body:         "\treturn nil",
+						StructName:   "*Wallet",
+						ReceiverName: "w",
+					},
+				},
 			},
 		},
-		Functions: []string{
-			(&function.Function{
+		Functions: []function.Function{
+			{
 				Name:      "UpdateBalance",
 				Arguments: "ctx context.Context, value int",
 				Returns:   "error",
 				Body:      "\treturn nil",
-			}).Generate(),
+			},
 		},
-		Generator: file.NewGenerator(),
 	}
 
-	if err := f.Generate(); err != nil {
-		t.Fatalf("generate: %v", err)
+	generated, err := f.Generate(t.Context())
+	if err != nil {
+		t.Fatal(err)
 	}
 
-	t.Log(f.Generator.Content)
+	t.Log(generated)
 }

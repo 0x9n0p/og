@@ -1,8 +1,10 @@
 package file
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/0x9n0p/og/generator/function"
 	"github.com/0x9n0p/og/generator/structure"
 )
 
@@ -10,46 +12,48 @@ type File struct {
 	PackageName string
 	Imports     []Import
 	Structures  []structure.Structure
-	Functions   []string
-	Generator   *Generator
+	Functions   []function.Function
 }
 
-func (g *File) Generate() error {
-	if err := g.Generator.PackageName(g.PackageName); err != nil {
-		return fmt.Errorf("set package name: %w", err)
-	}
+func (g *File) Generate(ctx context.Context) (string, error) {
+	generated := fmt.Sprintf("package %s", g.PackageName)
 
 	if g.Imports != nil && len(g.Imports) > 0 {
+		generated += "\n\nimport ("
+
 		for _, p := range g.Imports {
-			if err := g.Generator.Import(p); err != nil {
-				return fmt.Errorf("add import: %w", err)
+			ps, err := p.Generate(ctx)
+			if err != nil {
+				return "", fmt.Errorf("generate import: %w", err)
 			}
+
+			generated += "\n\t" + ps
 		}
+
+		generated += "\n)"
 	}
 
 	if g.Structures != nil && len(g.Structures) > 0 {
 		for _, s := range g.Structures {
-			if err := s.Generate(); err != nil {
-				return fmt.Errorf("generate structure: %w", err)
+			ss, err := s.Generate(ctx)
+			if err != nil {
+				return "", fmt.Errorf("generate structure: %w", err)
 			}
 
-			if err := g.Generator.Struct(s.Generator.Content); err != nil {
-				return fmt.Errorf("append structure: %w", err)
-			}
+			generated += "\n\n" + ss
 		}
 	}
 
 	if g.Functions != nil && len(g.Functions) > 0 {
 		for _, s := range g.Functions {
-			if err := g.Generator.Struct(s); err != nil {
-				return fmt.Errorf("append function: %w", err)
+			ss, err := s.Generate(ctx)
+			if err != nil {
+				return "", fmt.Errorf("generate function: %w", err)
 			}
+
+			generated += "\n\n" + ss
 		}
 	}
 
-	if err := g.Generator.Finalize(); err != nil {
-		return fmt.Errorf("finalize: %w", err)
-	}
-
-	return nil
+	return generated, nil
 }
