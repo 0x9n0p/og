@@ -3,13 +3,13 @@ package structure_test
 import (
 	"testing"
 
-	"github.com/0x9n0p/og/generator/structure"
+	structure2 "github.com/0x9n0p/og/pkg/generator/structure"
 )
 
 func TestGenerator_AddField(t *testing.T) {
-	g := structure.Structure{
+	g := structure2.Structure{
 		StructName: "User",
-		Fields: []structure.Field{
+		Fields: []structure2.Field{
 			{
 				Type: "gorm.Model",
 				Tags: `json:"-"`,
@@ -25,7 +25,7 @@ func TestGenerator_AddField(t *testing.T) {
 				Tags: `json:"username" gorm:"not null"`,
 			},
 		},
-		Methods: []structure.Method{
+		Methods: []structure2.Method{
 			{
 				Name:         "Create",
 				Arguments:    "ctx context.Context",

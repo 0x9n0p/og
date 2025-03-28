@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/0x9n0p/og/generator/function"
-	"github.com/0x9n0p/og/generator/structure"
+	"github.com/0x9n0p/og/pkg/generator/function"
+	"github.com/0x9n0p/og/pkg/generator/structure"
 )
 
 type File struct {

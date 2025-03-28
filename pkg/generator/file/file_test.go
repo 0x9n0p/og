@@ -3,24 +3,24 @@ package file_test
 import (
 	"testing"
 
-	"github.com/0x9n0p/og/generator/file"
-	"github.com/0x9n0p/og/generator/function"
-	"github.com/0x9n0p/og/generator/structure"
+	file2 "github.com/0x9n0p/og/pkg/generator/file"
+	"github.com/0x9n0p/og/pkg/generator/function"
+	structure2 "github.com/0x9n0p/og/pkg/generator/structure"
 )
 
 func TestGenerator(t *testing.T) {
-	f := file.File{
+	f := file2.File{
 		PackageName: "user",
-		Imports: []file.Import{
+		Imports: []file2.Import{
 			{
 				Alias: "_",
 				Path:  "github.com/example/example",
 			},
 		},
-		Structures: []structure.Structure{
+		Structures: []structure2.Structure{
 			{
 				StructName: "User",
-				Fields: []structure.Field{
+				Fields: []structure2.Field{
 					{
 						Name: "Username",
 						Type: "string",
@@ -30,14 +30,14 @@ func TestGenerator(t *testing.T) {
 			},
 			{
 				StructName: "Wallet",
-				Fields: []structure.Field{
+				Fields: []structure2.Field{
 					{
 						Name: "Balance",
 						Type: "int",
 						Tags: `json:"balance"`,
 					},
 				},
-				Methods: []structure.Method{
+				Methods: []structure2.Method{
 					{
 						Name:         "Save",
 						Arguments:    "",
