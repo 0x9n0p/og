@@ -1,4 +1,4 @@
-package og
+package payload
 
 import (
 	"encoding/json"

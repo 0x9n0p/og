@@ -5,7 +5,8 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/0x9n0p/og"
+	"github.com/0x9n0p/og/generator"
+	"github.com/0x9n0p/og/payload"
 	"github.com/spf13/cobra"
 )
 
@@ -28,12 +29,12 @@ to quickly create a Cobra application.`,
 			return fmt.Errorf("parse template: %w", err)
 		}
 
-		var pyld og.Payload
+		var pyld payload.Payload
 		if err := pyld.Load(args[0] + ".json"); err != nil {
 			return fmt.Errorf("load payload: %w", err)
 		}
 
-		generator := og.Generator{
+		generator := generator.Generator{
 			Template:    tmpl,
 			Payload:     pyld,
 			Destination: os.Stdout,

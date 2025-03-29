@@ -1,15 +1,17 @@
-package og
+package generator
 
 import (
 	"context"
 	"fmt"
 	"io"
 	"text/template"
+
+	"github.com/0x9n0p/og/payload"
 )
 
 type Generator struct {
 	Template    *template.Template
-	Payload     Payload
+	Payload     payload.Payload
 	Destination io.Writer
 }
 
