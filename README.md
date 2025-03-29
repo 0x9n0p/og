@@ -1,7 +1,6 @@
 # Old Gamers CLI tool
 
-I'm a coder who wants to automate tasks to sleep more and more! It's a simple and strong tool that you can
-generate codes. For example, I'm using it to generate CRUD APIs!
+It's a simple tool that you can generate codes. For example, I'm using it to generate CRUD APIs!
 
 ## How it works?
 
