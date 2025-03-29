@@ -20,18 +20,18 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.MinimumNArgs(1),
+	Args: cobra.MinimumNArgs(2),
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tmpl, err := template.ParseFiles(args[0] + ".tmpl")
-		if err != nil {
-			return fmt.Errorf("parse template: %w", err)
+		var pyld payload.Payload
+		if err := pyld.Load(args[0]); err != nil {
+			return fmt.Errorf("load payload: %w", err)
 		}
 
-		var pyld payload.Payload
-		if err := pyld.Load(args[0] + ".json"); err != nil {
-			return fmt.Errorf("load payload: %w", err)
+		tmpl, err := template.ParseFiles(args[1])
+		if err != nil {
+			return fmt.Errorf("parse template: %w", err)
 		}
 
 		generator := generator.Generator{

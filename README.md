@@ -1,6 +1,6 @@
 # Old Gamers CLI tool
 
-I'm a lazy and busy coder who wants to automate tasks to sleep more and more! It's a simple and strong tool that you can
+I'm a coder who wants to automate tasks to sleep more and more! It's a simple and strong tool that you can
 generate codes. For example, I'm using it to generate CRUD APIs!
 
 ## How it works?
@@ -8,8 +8,6 @@ generate codes. For example, I'm using it to generate CRUD APIs!
 og will load your template and payload files, then executes the template generator engine with your payload! So you need
 to provide your template and payload files. It uses [text/template](https://pkg.go.dev/text/template) package
 and [JSON](https://en.wikipedia.org/wiki/JSON) for the payload file.
-
-**The template and JSON names must be identical** since OG takes only one name in the terminal.
 
 For example, create a file named 'user.tmpl' with the following content.
 
@@ -31,13 +29,13 @@ And finally, execute the following command on your terminal so you will see the 
 payload.
 
 ```bash
-og user
+og user.json user.tmpl
 ```
 
 If you want to save the output on a files, you can use the following command.
 
 ```bash
-og user > user.txt
+og user.json user.tmpl > user.txt
 ```
 
 ## Contribution
